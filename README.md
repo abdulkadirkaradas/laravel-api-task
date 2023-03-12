@@ -1,3 +1,5 @@
+## <center> Usage </center>
+
 - In order to make requests to APIs, a request must be made to the /authorize request first.
 
 - Requests can be sent to other requests with the auth_token value returned from the request.
