@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\LogCreated;
 use App\Http\Controllers\Controller;
 use App\Models\Books;
 use Illuminate\Http\Request;
@@ -24,7 +25,24 @@ class BooksController extends Controller
 
     public function update(Request $request)
     {
+        $body = json_decode($request->getContent());
+        $params = [
+            "name" => $body->name ?? "",
+            "description" => $body->description ?? "",
+            "publishing_date" => $body->publishing_date ?? "",
+        ];
 
+        $book = Books::find($body->id);
+        foreach($params as $key => $value)
+        {
+            if($value != "")
+            {
+                $book->$key = $value;
+            }
+        }
+        $book->save();
+        event(new LogCreated($book));
+        return $book;
     }
 
     public function delete(Request $request)

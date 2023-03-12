@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Books;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -13,13 +14,14 @@ use Illuminate\Queue\SerializesModels;
 class LogCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+    public $record;
 
     /**
      * Create a new event instance.
      */
-    public function __construct()
+    public function __construct(Books $record)
     {
-        //
+        $this->record = $record;
     }
 
     /**
