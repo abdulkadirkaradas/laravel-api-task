@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthorizationsController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\BooksController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get("/authorize", [AuthorizationsController::class, "authorizing"]);
+
+Route::group(["namespace" => "Api", "middleware" => ["apimw"]], function() {
+    Route::get("/read", [BooksController::class, "read"]);
+    Route::put("/update", [BooksController::class, "update"]);
+    Route::delete("/delete", [BooksController::class, "delete"]);
+});

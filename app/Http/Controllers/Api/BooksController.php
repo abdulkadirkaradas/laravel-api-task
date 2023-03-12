@@ -7,5 +7,18 @@ use Illuminate\Http\Request;
 
 class BooksController extends Controller
 {
-    //
+    public function read(Request $request)
+    {
+
+    }
+
+    public function update(Request $request)
+    {
+
+    }
+
+    public function delete(Request $request)
+    {
+
+    }
 }
