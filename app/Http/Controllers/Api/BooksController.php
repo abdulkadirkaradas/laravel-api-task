@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\LogCreated;
 use App\Http\Controllers\Controller;
+use App\Jobs\DeleteUser;
 use App\Models\Books;
+use App\ResponseTypes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -47,6 +49,28 @@ class BooksController extends Controller
 
     public function delete(Request $request)
     {
+        $body = json_decode($request->getContent());
+        if($body)
+        {
+            $id = $body->id;
+            $book = Books::whereNull("deleted_at")->find($id);
+            if($book == "")
+            {
+                return [
+                    "status" => ResponseTypes::$invalidId,
+                    "message" => "Invalid id!",
+                ];
+            }
 
+            DeleteUser::dispatch($id);
+            return [
+                "status" => ResponseTypes::$ok,
+                "message" => "Record is deleted.",
+            ];
+        }
+        return [
+            "status" => ResponseTypes::$invalidId,
+            "message" => "Invalid id!",
+        ];
     }
 }
