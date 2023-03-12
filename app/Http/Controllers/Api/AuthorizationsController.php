@@ -13,11 +13,12 @@ class AuthorizationsController extends Controller
     public function authorizing(Request $request)
     {
         $ip = $request->ip();
-        $auth = Authorizations::where("ip_address", $ip)->firstOrFail();
+        $auth = Authorizations::whereNull("expired_at")->where("ip_address", $ip)->get();
 
-        if($auth->ip_address != null)
+        if(!$auth->isEmpty())
         {
-            return $auth->auth_token;
+            if(count($auth) > 0)
+                return $auth[0]->auth_token;
         }
         else
         {
